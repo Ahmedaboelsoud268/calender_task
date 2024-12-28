@@ -41,6 +41,7 @@ public class PageLocator_Calenders {
         {
             return driver.findElements(By.cssSelector("div[class=\"datepicker-days\"] td[class=\"day\"]"));
         }
+        //this is for a string of the year and change the format by using the dynamic number
     public String year()
     {
         return "//span[contains(text(),'%d')]";
