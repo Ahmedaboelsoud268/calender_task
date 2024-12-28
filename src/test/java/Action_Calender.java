@@ -1,3 +1,4 @@
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Action_Calender {
@@ -26,7 +28,8 @@ public class Action_Calender {
 
         @Test
         void TC_A() {
-            int number = 1999;
+
+            int number = 2032;
             calender.acceptCookies(driver).click();
             calender.inputFailed(driver).click();
             calender.getMonths(driver).click();
@@ -44,18 +47,8 @@ public class Action_Calender {
                 System.out.println(firstYear);
                 if (number >= firstYear && number <= lastYear) {
 
-                    if (lists.contains(String.valueOf(number))) {
-                        calender.listOfYears(driver).get(i).click();
-                        Random random = new Random();
-                        int getMonthsRandomly = random.nextInt(calender.listOfMonths(driver).size());
-                        WebElement getMonths = calender.listOfMonths(driver).get(getMonthsRandomly);
-                        getMonths.click();
-                        calender.listDays(driver).get(3).click();
-                    }
-                } else if (number < firstYear) {
-                    calender.prevBtn(driver).click();
-                    if (lists.get(i).contains(String.valueOf(number))) {
-                        calender.listOfYears(driver).get(i).click();
+                    if (calender.listOfYears(driver).get(i).getText().contains(String.valueOf(number))) {
+                        driver.findElement(By.xpath(String.format(calender.year(), number))).click();
                         Random random = new Random();
                         int getMonthsRandomly = random.nextInt(calender.listOfMonths(driver).size());
                         WebElement getMonths = calender.listOfMonths(driver).get(getMonthsRandomly);
@@ -63,19 +56,34 @@ public class Action_Calender {
                         calender.listDays(driver).get(3).click();
                     }
 
+                } else if (number < firstYear) {
+                    calender.prevBtn(driver).click();
+                    for (int y = 0; y < calender.listOfYears(driver).size(); y++) {
+                        if (calender.listOfYears(driver).get(y).getText().contains(String.valueOf(number))) {
+
+                            driver.findElement(By.xpath(String.format(calender.year(), number))).click();
+                            Random random = new Random();
+                            int getMonthsRandomly = random.nextInt(calender.listOfMonths(driver).size());
+                            WebElement getMonths = calender.listOfMonths(driver).get(getMonthsRandomly);
+                            getMonths.click();
+                            calender.listDays(driver).get(3).click();
+                        }
+                    }
                 } else {
                     calender.nextBtn(driver).click();
-                    if (lists.contains(String.valueOf(number)))
-                        calender.listOfYears(driver).get(i).click();
-                    Random random = new Random();
-                    int getMonthsRandomly = random.nextInt(calender.listOfMonths(driver).size());
-                    WebElement getMonths = calender.listOfMonths(driver).get(getMonthsRandomly);
-                    getMonths.click();
-                    calender.listDays(driver).get(3).click();
+                    for (int z = 0; z < calender.listOfYears(driver).size(); z++) {
+                        if (calender.listOfYears(driver).get(z).getText().contains(String.valueOf(number)))
+                            driver.findElement(By.xpath(String.format(calender.year(), number))).click();
+                        Random random = new Random();
+                        int getMonthsRandomly = random.nextInt(calender.listOfMonths(driver).size());
+                        WebElement getMonths = calender.listOfMonths(driver).get(getMonthsRandomly);
+                        getMonths.click();
+                        calender.listDays(driver).get(3).click();
+                    }
+
                 }
 
             }
-
         }
 
         @AfterMethod

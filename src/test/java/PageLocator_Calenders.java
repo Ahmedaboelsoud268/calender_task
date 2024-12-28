@@ -41,6 +41,10 @@ public class PageLocator_Calenders {
         {
             return driver.findElements(By.cssSelector("div[class=\"datepicker-days\"] td[class=\"day\"]"));
         }
+    public String year()
+    {
+        return "//span[contains(text(),'%d')]";
+    }
 
     }
 
